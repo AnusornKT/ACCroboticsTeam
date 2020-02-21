@@ -73,8 +73,6 @@ void loop()
 
 
 // #####################  Function Declare& Implementation  ####################
-
-
 // Front IR Sensor:
 void frontIRSensor()
 {
@@ -89,7 +87,6 @@ void frontIRSensor()
     Serial.print(sensorVoltageFrontSS);
     Serial.println("\n");
 }
-
 
 // Rear IR Sensor:
 void rearIRSensor()
@@ -106,8 +103,6 @@ void rearIRSensor()
     Serial.println("\n");
 }
 
-
-
 //--------------------- returnVoltageFromFrontIRsensor() function --------------
 float returnVoltageFromFrontIRsensor()
 {
@@ -121,7 +116,6 @@ float returnVoltageFromFrontIRsensor()
   return sensorVoltageFrontSS;
 }
 
-
 //--------------------- returnVoltageFromRearIRsensor() function ---------------
 float returnVoltageFromRearIRsensor()
 {
@@ -134,9 +128,6 @@ float returnVoltageFromRearIRsensor()
 
   return sensorVoltageRearSS;
 }
-
-
-
 
 // ################################  Movement(s)  ##############################
 //---------------------------- forward() function ------------------------------
@@ -156,7 +147,6 @@ void forward()
 
 }
 
-
 //---------------------------- backward() function -----------------------------
 void backward()
 {
@@ -173,8 +163,6 @@ void backward()
   delay(400);
 
 }
-
-
 
 //---------------------------- rightTurn() function ----------------------------
 void rightTurn()
@@ -195,10 +183,8 @@ void rightTurn()
 
 }
 
-
-
-//---------------------------- rightTurnReverse() function ---------------------
-void rightTurnReverse()
+//---------------------------- sharpRightTurn() function ---------------------
+void sharpRightTurn()
 {
   Serial.println("==== Righh turn >>>>");
 
@@ -216,7 +202,6 @@ void rightTurnReverse()
   delay(500);
 
 }
-
 
 //---------------------------- leftTurn() function -----------------------------
 void leftTurn()
@@ -237,10 +222,8 @@ void leftTurn()
 
 }
 
-
-
-//---------------------------- leftTurnReverse() function ----------------------
-void leftTurnReverse()
+//---------------------------- sharpLeftTurn() function ----------------------
+void sharpLeftTurn()
 {
   Serial.println("<<<< Left turn ====");
 
