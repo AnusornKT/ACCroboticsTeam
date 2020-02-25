@@ -2,13 +2,17 @@
 
 // ----------------------------------- Motors ----------------------------------
 // Left-sided motors:
-int ENA = 9;
-int IN1 = 10;
-int IN2 = 11;
-
-// Right-sided motors:
 int ENB = 4;
+//Backward
+int IN1 = 11;
+//Forward
+int IN2 = 10;
+
+// Right-side motors:
+int ENA = 9;
+//Backward
 int IN3 = 6;
+//Forward
 int IN4 = 5;
 
 
@@ -58,11 +62,18 @@ void setup()
 // ################################  loop()  ###################################
 void loop()
 {
-
-
-
+  forward();
+  delay(1000);
+  backward();
+  delay(1000);
+  sharpRightTurn();
+  delay(1000);
+  sharpLeftTurn();
+  delay(1000);
+  rightTurn();
+  delay(1000);
   leftTurn();
-  delay(500);
+
 
 
 
@@ -135,15 +146,15 @@ void forward()
 {
   Serial.println("\n===== Forward =====");
   // Turn on motors on the Left-sided:(A)
-  digitalWrite(IN1, HIGH);
-
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN1,LOW);
   // Turn on motors on the Right-sided:(B)
   digitalWrite(IN4, HIGH);
-
+  digitalWrite(IN3, LOW);
   // TO set the turning speed to 200 out of possible range 0 to 255
   analogWrite(ENB, 130);
-  analogWrite(ENA, 130);
-  delay(400);
+  analogWrite(ENA, 180);
+  delay(2000);
 
 }
 
@@ -152,15 +163,16 @@ void backward()
 {
   Serial.println("\n+++++ Backward +++++");
 
-  digitalWrite(IN2, HIGH);
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
 
-
-  digitalWrite(IN4, HIGH);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
 
   // TO set the turning speed to 200 out of possible range 0 to 255
-  analogWrite(ENB, 100);
-  analogWrite(ENA, 100);
-  delay(400);
+  analogWrite(ENB, 130);
+  analogWrite(ENA, 180);
+  delay(2000);
 
 }
 
@@ -170,36 +182,38 @@ void rightTurn()
   Serial.println("==== Righh turn >>>>");
   // Turn on motors on the left-sided:(A)
   digitalWrite(IN1, HIGH);
-
+  digitalWrite(IN2, LOW);
 
   // Turn on motors on the right-sided:(B)
-  digitalWrite(IN4, HIGH);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
 
 
   // TO set the turning speed to 200 out of possible range 0 to 255
   analogWrite(ENA, 75);
   analogWrite(ENB, 150);
-  delay(500);
+  delay(1000);
 
 }
 
 //---------------------------- sharpRightTurn() function ---------------------
 void sharpRightTurn()
 {
-  Serial.println("==== Righh turn >>>>");
+  Serial.println("==== Sharp Righh turn >>>>");
 
   // Turn on motors on the right-sided:(B)
-  digitalWrite(IN1, LOW);
-
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
 
   // Turn on motors on the left-sided:(B)
   digitalWrite(IN4, HIGH);
+  digitalWrite(IN3, LOW);
 
 
   // TO set the turning speed to 200 out of possible range 0 to 255
-  // analogWrite(ENA, 150);
+  analogWrite(ENA, 150);
   analogWrite(ENB, 150);
-  delay(500);
+  delay(1000);
 
 }
 
@@ -209,35 +223,36 @@ void leftTurn()
   Serial.println("<<<< Left turn ====");
   // Turn on motors on the left-sided:(A)
   digitalWrite(IN1, HIGH);
-
+  digitalWrite(IN2,LOW);
 
   // Turn on motors on the right-sided:(B)
-  digitalWrite(IN4, HIGH);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
 
 
   // TO set the turning speed to 200 out of possible range 0 to 255
   analogWrite(ENA, 150);
   analogWrite(ENB, 75);
-  delay(500);
+  delay(1000);
 
 }
 
 //---------------------------- sharpLeftTurn() function ----------------------
 void sharpLeftTurn()
 {
-  Serial.println("<<<< Left turn ====");
+  Serial.println("<<<< Sharp Left turn ====");
 
   // Turn on motors on the right-sided:(B)
-  digitalWrite(IN1, HIGH);
-
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN1, LOW);
 
   // Turn on motors on the left-sided:(B)
+  digitalWrite(IN3, HIGH);
   digitalWrite(IN4, LOW);
-
 
   // TO set the turning speed to 200 out of possible range 0 to 255
   analogWrite(ENA, 150);
-  // analogWrite(ENB, 150);
-  delay(500);
+  analogWrite(ENB, 150);
+  delay(1000);
 
 }
