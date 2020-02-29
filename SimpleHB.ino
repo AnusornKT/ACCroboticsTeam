@@ -1,5 +1,22 @@
-// **************** L298N H-Bridge driving DC motor on Arduino *****************
+#include <LSM9DS1_Types.h>
+#include <SparkFunLSM9DS1.h>
+#include <LSM9DS1_Registers.h>
+#include <Wire.h>
 
+
+//Library
+LSM9DS1 compass;  // Storing the features in the HMC5883 library as a variable called compass
+
+
+// ----------------------------------- Compass ----------------------------------
+// SDO_XM and SDO_G are both pulled high, so our addresses are:
+#define LSM9DS1_M  0x1E // Would be 0x1C if SDO_M is LOW
+#define LSM9DS1_AG  0x6B // Would be 0x6A if SDO_AG is LOW
+
+// Variable to hold Heading in degrees
+float currentHeading = 0.0;
+
+// **************** L298N H-Bridge driving DC motor on Arduino *****************
 // ----------------------------------- Motors ----------------------------------
 // Left-sided motors:
 int ENB = 4;
@@ -27,12 +44,6 @@ float sensorVoltageRearSS = 0.0;
 int sensorValueRearSS = 0;
 
 
-// ---------------------------- SpeedOfTheWheels -------------------------------
-// int speedOfRightWheel = 255;  // The speed of the right wheel
-// int speedOfLeftWheel = 247;   // The speed of the left wheel
-
-
-
 // ###############################  setup()  ###################################
 void setup()
 {
@@ -55,6 +66,10 @@ void setup()
   analogWrite(ENA, 0);
   analogWrite(ENB, 0);
 
+
+  // setup the HMC5883L:
+  compassSetup();
+
 }
 
 
@@ -62,20 +77,36 @@ void setup()
 // ################################  loop()  ###################################
 void loop()
 {
-  forward();
-  delay(1000);
-  backward();
-  delay(1000);
-  sharpRightTurn();
-  delay(1000);
-  sharpLeftTurn();
-  delay(1000);
-  rightTurn();
-  delay(1000);
-  leftTurn();
+
+  currentHeading = getHeading();
+
+  Serial.print("Heading: ");
+  Serial.println(currentHeading);
+  delay(700);
 
 
 
+//   if(returnVoltageFromFrontIRsensor() > 1)
+//   {
+//     Serial.println("-------- Danger!!  Object detected in front! --------");
+//     stop();
+//     if(returnVoltageFromRearIRsensor() > 0.85)
+//     {
+//        Serial.println("-------- Danger!!  Object detected from the back! --------");
+//        sharpRightTurn();
+//     }
+//     else
+//     {
+//        backward();
+//        stop();
+//        rightTurn();
+//     }
+//
+//   }
+//   else
+//   {
+//     forward();
+//   }
 
 
 }
@@ -121,7 +152,7 @@ float returnVoltageFromFrontIRsensor()
   // Covert into Volts:
   sensorValueFrontSS = analogRead(analogInpinFrontSS);
   sensorVoltageFrontSS = (sensorValueFrontSS * (5.0 / 1023.0));
-  Serial.print("\t\tsensorVoltage = ");
+  Serial.print("\t\tsensorVoltage from frontIR= ");
   Serial.println(sensorVoltageFrontSS);
 
   return sensorVoltageFrontSS;
@@ -134,7 +165,7 @@ float returnVoltageFromRearIRsensor()
   // Covert into Volts:
   sensorValueRearSS = analogRead(analogInpinRearSS);
   sensorVoltageRearSS = (sensorValueRearSS * (5.0 / 1023.0));
-  Serial.print("\t\tsensorVoltage = ");
+  Serial.print("\t\tsensorVoltage from rearIR = ");
   Serial.println(sensorVoltageRearSS);
 
   return sensorVoltageRearSS;
@@ -154,7 +185,7 @@ void forward()
   // TO set the turning speed to 200 out of possible range 0 to 255
   analogWrite(ENB, 130);
   analogWrite(ENA, 180);
-  delay(2000);
+  // delay(2000);
 
 }
 
@@ -172,7 +203,7 @@ void backward()
   // TO set the turning speed to 200 out of possible range 0 to 255
   analogWrite(ENB, 130);
   analogWrite(ENA, 180);
-  delay(2000);
+  delay(600);
 
 }
 
@@ -254,5 +285,23 @@ void sharpLeftTurn()
   analogWrite(ENA, 150);
   analogWrite(ENB, 150);
   delay(1000);
+
+}
+
+//------------------------------ stop_i() function ------------------------------
+void stop()
+{
+
+   Serial.println("!!!!!!!!!! Stop !!!!!!!!!!");
+  // TO set the turning speed to 200 out of possible range 0 to 255
+  // Turn on the left-sided motors:(A)
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+
+  // Turn on the right-sided motors:(B)
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+
+  delay(3000);
 
 }
