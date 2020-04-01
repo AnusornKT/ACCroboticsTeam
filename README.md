@@ -1,2 +1,2 @@
-################################ ACC Robotics Team ################################
+######################### ACC Robotics Team #########################
 Colorad Space Grant Consortium
